@@ -103,8 +103,8 @@ The following security controls can be met through configuration of this templat
 
 ## History
 
-| Date     | Change                                           |
-| -------- | ------------------------------------------------ |
-| 20190201 | First release of template.                       |
-| 20190430 | Updated documentation                            |
-| 20190501 | Update documentation and add validation pipeline |
+| Date     | Release                                                                           | Change                                           |
+| -------- | --------------------------------------------------------------------------------- | ------------------------------------------------ |
+| 20190201 |                                                                                   | First release of template.                       |
+| 20190430 |                                                                                   | Updated documentation                            |
+| 20190521 | [20190521](https://github.com/canada-ca-azure-templates/devtestlab/tree/20190521) | Update documentation and add validation pipeline |

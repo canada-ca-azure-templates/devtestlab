@@ -29,13 +29,6 @@
         "allowedImages": {
             "value": [
                 {
-                    "offer": "FreeBSD",
-                    "publisher": "MicrosoftOSTC",
-                    "sku": "12.0",
-                    "osType": "Linux",
-                    "version": "latest"
-                },
-                {
                     "offer": "WindowsServer",
                     "publisher": "MicrosoftWindowsServer",
                     "sku": "2019-Datacenter",

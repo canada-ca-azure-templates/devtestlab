@@ -20,6 +20,15 @@ function getValidationURL {
     return $validateURL
 }
 
+function getCleanupURL {
+    $remoteURL = git config --get remote.origin.url
+    $currentBranch = git rev-parse --abbrev-ref HEAD
+    $remoteURLnogit = $remoteURL -replace '\.git', ''
+    $remoteURLRAW = $remoteURLnogit -replace 'github.com', 'raw.githubusercontent.com'
+    $validateURL = $remoteURLRAW + '/' + $currentBranch + '/test/parameters/cleanup.json'
+    return $validateURL
+}
+
 function getBaseParametersURL {
     $remoteURL = git config --get remote.origin.url
     $currentBranch = git rev-parse --abbrev-ref HEAD
@@ -31,6 +40,7 @@ function getBaseParametersURL {
 
 $currentBranch = "dev"
 $validationURL = "https://raw.githubusercontent.com/canada-ca-azure-templates/$templateLibraryName/dev/template/azuredeploy.json"
+$cleanupURL = "https://raw.githubusercontent.com/canada-ca-azure-templates/$templateLibraryName/dev/test/parameters/azuredeploy.json"
 $baseParametersURL = "https://raw.githubusercontent.com/canada-ca-azure-templates/$templateLibraryName/dev/test/"
 
 if (-not $devopsCICD) {
@@ -44,6 +54,7 @@ if (-not $devopsCICD) {
     }
 
     $validationURL = getValidationURL
+    $cleanupURL = getCleanupURL
     $baseParametersURL = getBaseParametersURL
 
     # Make sure we update code to git
@@ -63,6 +74,7 @@ if (-not $doNotCleanup) {
     if ($resourceGroup) {
         Write-Host "Cleanup old $templateLibraryName template validation resources if needed..."
 
+        Get-AzureRmResourceLock -ResourceGroupName PwS2-validate-$templateLibraryName-RG | Remove-AzureRmResourceLock -Verbose -Force
         Remove-AzureRmResourceGroup -Name PwS2-validate-$templateLibraryName-RG -Verbose -Force
     }
 }
@@ -94,5 +106,6 @@ if ($provisionningState -eq "Failed") {
 if (-not $doNotCleanup) {
     Write-Host "Cleanup $templateLibraryName template validation resources...";
 
+    Get-AzureRmResourceLock -ResourceGroupName PwS2-validate-$templateLibraryName-RG | Remove-AzureRmResourceLock -Verbose -Force
     Remove-AzureRmResourceGroup -Name PwS2-validate-$templateLibraryName-RG -Verbose -Force
 }
